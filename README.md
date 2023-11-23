@@ -5,7 +5,9 @@ In this project I predict 2 models. One where I predict whether an image contain
 **Purpose:** The purpose of this project was to increase my practice in transfer learning & to use bayesian hyperparameter tuning for optimizer, base-model & mlp hyperparameters.
 
 # Model Results
-D:\Side-Projects\Schoool\ML-Practicuum\A3\flowers_confusion.png
+### Flowers Confusion Matrix
+![image](https://github.com/Charles-Gormley/TransferLearning/assets/76138796/48be6054-ebae-4251-8889-f27f4a3868d8)
+
 
 ## Obtaining Data
 * **Flowers:**The flowers dataset can be obtained through the script which calls the tensorflow datasets, specifically the: *oxford_flowers* dataset. 
