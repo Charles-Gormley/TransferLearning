@@ -5,13 +5,13 @@ import logging
 import tarfile
 
 # Repository Packages.-
-from preprocessDefinition import preprocess, generate_mlp, train_test_split, parse_examples_flower
+from preprocessDefinition import preprocess, generate_mlp, train_test_split, parse_examples_bird
 
 # External Modules
 from tensorflow.keras import layers, models
 import tensorflow as tf
+
 from tensorflow.keras.layers import Input
-import tensorflow_datasets as tfds
 from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import EarlyStopping
 from numba import cuda
@@ -25,7 +25,8 @@ logging.basicConfig(level=logging.INFO, format=log_format)
 
 logging.info("Finished Imports")
 
-classes = 102
+
+classes = 3
 batch_size = 5
 epochs = 25
 height, width = 256, 256
@@ -33,15 +34,15 @@ image_tup = (height, width)
 gpus = tf.config.experimental.list_physical_devices('GPU')
 # tf.config.experimental.set_virtual_device_configuration(gpus[0], [tf.config.experimental.VirtualDeviceConfiguration]) 
 
+
 ##################### Loading Data #####################
 logging.info("Loading in Data")
-dataset_name = "oxford_flowers102"
-raw_dataset_train, info = tfds.load(name=dataset_name, split=tfds.Split.TRAIN, with_info=True)
+raw_dataset_train= tf.data.TFRecordDataset(['birds-vs-squirrels-train.tfrecords'])
 
-train_base, test_base = train_test_split(raw_dataset_train, 0.8)
+train_base, test_base = train_test_split(dataset = raw_dataset_train, train_size_ratio=0.8)
 
-train_base = train_base.map(parse_examples_flower, num_parallel_calls=16)
-test_base = test_base.map(parse_examples_flower, num_parallel_calls=16)
+train_base = train_base.map(parse_examples_bird, num_parallel_calls=16)
+test_base = test_base.map(parse_examples_bird, num_parallel_calls=16)
 
 train = train_base.map(preprocess, num_parallel_calls=16)
 test = test_base.map(preprocess, num_parallel_calls=16)
@@ -55,11 +56,12 @@ inputs = Input(shape=input_shape)
 
 ##################### Loading Model #####################
 logging.info("Loading in Model")
-num_layers = 10
-init_neurons = 600
-scaling_factor = .75641
-dropout_rate = .04489
-learning_rate = 0.009605915177560863
+# Model Hyperparams
+num_layers = 2
+init_neurons = 33
+scaling_factor = .827
+dropout_rate = .422
+learning_rate = 8.930756900513153e-06
 activation = 'tanh'
 
 early_stopping = EarlyStopping(
@@ -68,6 +70,7 @@ early_stopping = EarlyStopping(
     min_delta=0.01,  
     restore_best_weights=True  
 )
+
 logging.info("Loading in Model")
 cxl = tf.keras.applications.ConvNeXtXLarge(
         model_name="convnext_xlarge",
@@ -75,7 +78,7 @@ cxl = tf.keras.applications.ConvNeXtXLarge(
         include_preprocessing=True,
         weights="imagenet",
         input_tensor=None,
-        input_shape=(height, width, 3),
+        input_shape=(height, width, classes),
         pooling=None,
         classes=classes,
         classifier_activation="softmax",
@@ -100,18 +103,15 @@ x = top_layer(x)
 
 model = Model(inputs, x)
 
-optimizer = tf.keras.optimizers.SGD(learning_rate=learning_rate)
+optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
 
 ##################### Fitting Model #####################
 logging.info("Training Model")
 model.fit(train, epochs=epochs, batch_size = batch_size, validation_data=test, verbose=1, callbacks=[early_stopping])
 
-##################### Model Saving #####################
+##################### Saving Model #####################
 logging.info("Saving Model")
-
-model.save('flowersModel')
-with tarfile.open(f'flowersModel.tgz', 'w:gz') as tar:
-    tar.add('flowersModel')
-
-logging.info("Model Saved & Script Complete")
+model.save('birdsVsSquirrelsModel-test')
+with tarfile.open('birdsVsSquirrelsModel-test.tgz', 'w:gz') as tar:
+    tar.add('birdsVsSquirrelsModel-test')

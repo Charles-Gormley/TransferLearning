@@ -1,3 +1,9 @@
 *.tfrecords
 *.crdownload
 *.pdf
+flowersModel*
+birdsVsSquirrelsModel*
+*.tgz
+.git
+__pycache__
+
