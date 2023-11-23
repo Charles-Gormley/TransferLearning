@@ -1,4 +1,4 @@
-"#TransferLearning" 
+#TransferLearning
 
 In this project I predict 2 models. One where I predict whether an image contains a bird, squirrel or nothing. Another where I classify 102 flowers.
 
