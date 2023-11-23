@@ -40,6 +40,9 @@ predictions = np.argmax(predictions, axis=1)
 # Extract true labels
 true_labels = np.concatenate([y for _, y in valid], axis=0)
 
+if len(true_labels.shape) > 1 and true_labels.shape[1] > 1:
+    true_labels = np.argmax(true_labels, axis=1)
+
 # Now compute the confusion matrix
 conf_matrix = confusion_matrix(true_labels, predictions)
 
@@ -52,4 +55,4 @@ sns.heatmap(conf_matrix_normalized, annot=False, fmt='.2%', cmap='Blues', xtickl
 plt.xlabel('Predicted Labels')
 plt.ylabel('True Labels')
 plt.savefig('birds_confusion.png')
-plt.show()
+plt.close()
