@@ -2,7 +2,7 @@
 
 In this project I predict 2 models. One where I predict whether an image contains a bird, squirrel or nothing. Another where I classify 102 flowers.
 
-**Purpose:** The purpose of this project was to increase my practice in transfer learning & to use bayesian hyperparameter tuning for optimizer, base-model & mlp hyperparameters.
+**Purpose:** The purpose of this project was to increase my practice in transfer learning & to use bayesian hyperparameter tuning for base-model & top-layer-mlp hyperparameters.
 
 # Model Results
 ### Flowers Confusion Matrix
