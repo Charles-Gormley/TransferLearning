@@ -1,0 +1,31 @@
+userid: ceg98
+compliance (10 points): 10.0
+missingfiles names: set()
+bvs Loss_Train: 0.01897862367331982
+bvs Loss_Valid: 0.02456516027450562
+bvs Loss_Test: 0.01521189231425524
+bvs Accuracy_Train: 0.9949730038642883
+bvs Accuracy_Valid: 0.9940804839134216
+bvs Accuracy_Test: 0.9964129328727722
+bvs rank (15 points): 15
+loss-train: 0.2347575724124908
+loss-valid: 0.3214911222457886
+loss-test: 0.3339388072490692
+accuracy-train: 0.9970588088035583
+accuracy-valid: 0.9892156720161438
+accuracy-test: 0.9866644740104675
+top2_accuracy-train: 0.9990196228027344
+top2_accuracy-valid: 0.9911764860153198
+top2_accuracy-test: 0.9905675649642944
+top5_accuracy-train: 1.0
+top5_accuracy-valid: 0.9960784316062927
+top5_accuracy-test: 0.9938201308250427
+flower rank (15 points): 13.84704613671441
+model compliance (10 points): 10
+Preprocess Code (10 points): 9 ( process function: ValueError: Input 0 of layer "model" is incompatible with the layer: expected shape=(None, 256, 256, 3), found shape=(None, 299, 299, 3))
+load a pre-trained model and bring in the tfrecords and correctly / get the flower dataset correctly (10 points):  9 (The flower dataset has different splits: training, testing, and validation. You used some part of the training split for validation and and some part of the training split for testing).
+modify its top and freeze the pre-trained weights (10 points): 10
+compile the model with an appropriate loss function, optimizer, and metrics and fit the model (10 points): 10
+save the final trained model (10 points): 10
+notes: nan
+Total: 96.84704613671441
